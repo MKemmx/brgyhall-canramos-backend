@@ -4,7 +4,7 @@ const BlotterSchema = mongoose.Schema({
   complainant: {
     type: String,
   },
-  phoneNumber: {
+  complainantPhoneNumber: {
     type: String,
   },
   complainantAddress: {
@@ -14,13 +14,24 @@ const BlotterSchema = mongoose.Schema({
     type: String,
   },
   incidentDate: {
-    type: Date,
+    type: String,
   },
   incidentLocation: {
     type: String,
   },
-  Complainee: {
+  complainee: {
     type: String,
+  },
+  complaineeDetails: {
+    type: String,
+  },
+
+  schedule: {
+    type: String,
+  },
+  status: {
+    type: String,
+    default: "active",
   },
   created_at: {
     type: Date,

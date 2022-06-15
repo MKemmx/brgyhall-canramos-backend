@@ -19,6 +19,7 @@ app.use("/api/certificate/", require("./Routes/certificate"));
 app.use("/api/indigency/", require("./Routes/indigency"));
 app.use("/api/activity/", require("./Routes/activity"));
 app.use("/api/household/", require("./Routes/household"));
+app.use("/api/blotter/", require("./Routes/blotter"));
 app.use("/api/dashboard/", require("./Routes/dashboard"));
 
 // Server
