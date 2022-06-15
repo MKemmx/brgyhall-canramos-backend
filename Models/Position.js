@@ -11,6 +11,17 @@ const PositionSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  previous_elected: [
+    {
+      term: {
+        type: String,
+      },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "resident",
+      },
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now,

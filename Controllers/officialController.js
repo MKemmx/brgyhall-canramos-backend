@@ -5,6 +5,11 @@ const PositionModel = require("../Models/Position");
 const create_official = async (req, res) => {
   const { user, position, term } = req.body;
 
+  const newElected = {
+    user,
+    term,
+  };
+
   const barangayPositions = await PositionModel.findOne({ _id: position });
   if (barangayPositions.elected >= barangayPositions.maximum) {
     return res.status(500).json({
@@ -23,6 +28,9 @@ const create_official = async (req, res) => {
   await PositionModel.updateOne(
     { _id: position },
     {
+      $push: {
+        previous_elected: newElected,
+      },
       $inc: { elected: 1 },
     }
   );
@@ -64,8 +72,16 @@ const read_official = async (req, res) => {
 };
 const read_active_official = async (req, res) => {
   try {
-    const official = await OfficialModel.find({ status: "active" });
-    console.log(official);
+    const official = await OfficialModel.find({ status: "active" })
+      .populate("position position")
+      .populate({
+        path: "user",
+        populate: {
+          path: "zone",
+          model: "zone",
+        },
+      })
+      .sort({ status: 1, created_at: -1 });
 
     return res
       .status(200)

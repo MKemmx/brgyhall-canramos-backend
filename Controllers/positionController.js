@@ -16,7 +16,9 @@ const create_position = async (req, res) => {
 };
 const read_position = async (req, res) => {
   try {
-    const position = await Position.find().sort({ createdAt: -1 });
+    const position = await Position.find()
+      .populate("previous_elected.user")
+      .sort({ createdAt: -1 });
     return res.status(200).json({ msg: "Success Fetching position", position });
   } catch (error) {
     console.log(error.message);

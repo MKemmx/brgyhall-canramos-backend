@@ -44,6 +44,7 @@ const create_resident = async (req, res) => {
     return res.status(500).json({ msg: "Server error!" });
   }
 };
+
 const read_resident = async (req, res) => {
   try {
     const resident = await ResidentModel.find()
@@ -106,6 +107,7 @@ const activate_resident = async (req, res) => {
     return res.status(500).json({ msg: "Server error!" });
   }
 };
+
 const update_resident = async (req, res) => {
   const {
     firstName,
@@ -152,6 +154,7 @@ const update_resident = async (req, res) => {
     return res.status(500).json({ msg: "Server Error" });
   }
 };
+
 const delete_resident = async (req, res) => {};
 
 module.exports = {

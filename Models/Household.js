@@ -4,12 +4,9 @@ const HouseholdSchema = mongoose.Schema({
   householdNumber: {
     type: String,
   },
-  zone: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "zone",
-  },
   familyHead: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "resident",
   },
   status: {
     type: String,
