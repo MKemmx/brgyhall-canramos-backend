@@ -16,8 +16,9 @@ Router.get("/", authMiddleware, async (req, res) => {
     const admin = await AdminModel.findOne({ _id: req.user.id }).select(
       "-password"
     );
+
     const data = {
-      ...admin._doc,
+      user: admin,
       role: "admin",
     };
 
@@ -59,7 +60,14 @@ Router.post("/", async (req, res) => {
       return res.status(500).json({ msg: "Something went wrong!" });
     }
     // SUCCESS THROW TOKEN
-    return res.status(200).json({ token });
+
+    const data = {
+      user: adminExist,
+      token,
+      role: "admin",
+    };
+
+    return res.status(200).json(data);
   } catch (error) {
     console.log("Error message: ", error.message);
     return res.status(500).json({ msg: "Server Error" });
