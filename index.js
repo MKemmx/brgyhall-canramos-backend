@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
+require("dotenv").config();
+
 // Database
 const db = require("./database");
 db();
@@ -21,8 +23,14 @@ app.use("/api/activity/", require("./Routes/activity"));
 app.use("/api/household/", require("./Routes/household"));
 app.use("/api/blotter/", require("./Routes/blotter"));
 app.use("/api/dashboard/", require("./Routes/dashboard"));
+app.use("/api/admin/", require("./Routes/admin"));
+app.use("/api/moderator/", require("./Routes/moderator"));
+
+// LOGIN AUTH ROUTES || ADMIN && MODERATOR
+app.use("/api/auth-admin/", require("./Routes/authAdmin"));
+app.use("/api/auth-moderator/", require("./Routes/moderator"));
 
 // Server
-app.listen(5000, () => {
-  console.log(`Server is running on port 5000`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
