@@ -28,7 +28,7 @@ app.use("/api/moderator/", require("./Routes/moderator"));
 
 // LOGIN AUTH ROUTES || ADMIN && MODERATOR
 app.use("/api/auth-admin/", require("./Routes/authAdmin"));
-app.use("/api/auth-moderator/", require("./Routes/moderator"));
+app.use("/api/auth-moderator/", require("./Routes/authModerator"));
 
 // Server
 app.listen(process.env.PORT, () => {

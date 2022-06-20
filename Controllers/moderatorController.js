@@ -20,7 +20,9 @@ const create_moderator = async (req, res) => {
       phoneNumber,
     });
     const savedModerator = await newModerator.save();
-    return res.status(200).json({ msg: "Server Error", savedModerator });
+    return res
+      .status(200)
+      .json({ msg: "Success creating moderator", savedModerator });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ msg: "Server Error" });

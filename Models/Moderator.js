@@ -7,7 +7,7 @@ const ModeratorSchema = mongoose.Schema({
   password: {
     type: String,
   },
-  emaill: {
+  email: {
     type: String,
   },
   phoneNumber: {

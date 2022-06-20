@@ -6,20 +6,20 @@ const jwt = require("jsonwebtoken");
 // ADMIN Auth Middlewares
 const { authMiddleware } = require("../Middleware/AuthMiddleware");
 // ADMIN Model
-const AdminModel = require("../Models/Admin");
+const ModeratorModel = require("../Models/Moderator");
 
 //? LOAD USER CHECK IF ALREADY LOGIN
 //? GET REQUEST
-//? api/auth-admin
+//? api/auth-moderator
 Router.get("/", authMiddleware, async (req, res) => {
   try {
-    const admin = await AdminModel.findOne({ _id: req.user.id }).select(
+    const moderator = await ModeratorModel.findOne({ _id: req.user.id }).select(
       "-password"
     );
 
     const data = {
-      user: admin,
-      role: "admin",
+      user: moderator,
+      role: "moderator",
     };
 
     return res.status(200).json(data);
@@ -31,26 +31,26 @@ Router.get("/", authMiddleware, async (req, res) => {
 
 //? LOGIN THE USER
 //? POST REQUEST
-//? api/auth-admin
+//? api/auth-moderator
 Router.post("/", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const adminExist = await AdminModel.findOne({ email });
+    const moderatorExist = await ModeratorModel.findOne({ email });
     //! Check if admin exist
-    if (!adminExist) {
+    if (!moderatorExist) {
       return res
         .status(400)
-        .json({ msg: "No admin found with that email address!" });
+        .json({ msg: "No moderator found with that email address!" });
     }
     //   //!  CHECK IF PASSWORD IS SAME
-    const isMatch = await bcrypt.compare(password, adminExist.password);
+    const isMatch = await bcrypt.compare(password, moderatorExist.password);
     if (!isMatch) {
       return res.status(400).json({ msg: "Password does not match!" });
     }
     // PAYLOAD
     const payload = {
       user: {
-        id: adminExist._id,
+        id: moderatorExist._id,
       },
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -62,9 +62,9 @@ Router.post("/", async (req, res) => {
     // SUCCESS THROW TOKEN
 
     const data = {
-      user: adminExist,
+      user: moderatorExist,
       token,
-      role: "admin",
+      role: "moderator",
     };
 
     return res.status(200).json(data);
