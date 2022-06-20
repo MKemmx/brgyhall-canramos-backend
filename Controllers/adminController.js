@@ -30,7 +30,9 @@ const create_admin = async (req, res) => {
 // Read admin
 const read_admin = async (req, res) => {
   try {
-    const admin = await AdminModel.find().sort({ created_at: -1 });
+    const admin = await AdminModel.find()
+      .select("-password")
+      .sort({ created_at: -1 });
     return res.status(200).json({ msg: "Success fetching admins", admin });
   } catch (error) {
     console.log(error.message);

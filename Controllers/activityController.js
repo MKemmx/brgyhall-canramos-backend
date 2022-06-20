@@ -2,7 +2,7 @@
 const ActivityModel = require("../Models/Activity");
 
 const create_activity = async (req, res) => {
-  const { user, activityDescription, activityDate } = req.body;
+  const { user, activityDescription } = req.body;
   try {
     const newActivity = new ActivityModel({
       user,

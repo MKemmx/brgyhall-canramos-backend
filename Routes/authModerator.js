@@ -4,14 +4,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 // ADMIN Auth Middlewares
-const { authMiddleware } = require("../Middleware/AuthMiddleware");
+const { AuthMiddleware } = require("../Middleware/AuthMiddleware");
 // ADMIN Model
 const ModeratorModel = require("../Models/Moderator");
 
 //? LOAD USER CHECK IF ALREADY LOGIN
 //? GET REQUEST
 //? api/auth-moderator
-Router.get("/", authMiddleware, async (req, res) => {
+Router.get("/", AuthMiddleware, async (req, res) => {
   try {
     const moderator = await ModeratorModel.findOne({ _id: req.user.id }).select(
       "-password"

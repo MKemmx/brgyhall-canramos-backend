@@ -32,7 +32,9 @@ const create_moderator = async (req, res) => {
 // Read Moderator
 const read_moderator = async (req, res) => {
   try {
-    const moderator = await ModeratorModel.find().sort({ created_at: -1 });
+    const moderator = await ModeratorModel.find()
+      .select("-password")
+      .sort({ created_at: -1 });
     return res
       .status(200)
       .json({ msg: "Success fetching moderator", moderator });

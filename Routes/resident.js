@@ -1,7 +1,8 @@
 const Router = require("express").Router();
 
 // MIDDLEWARES
-const { authMiddleware } = require("../Middleware/AuthMiddleware");
+const { AuthMiddleware } = require("../Middleware/AuthMiddleware");
+const { AdminMiddleware } = require("../Middleware/AdminMiddleware");
 
 // Controllers
 const {
@@ -15,11 +16,11 @@ const {
 } = require("../Controllers/residentController");
 
 Router.post("/create-resident", create_resident);
-Router.get("/read-resident", authMiddleware, read_resident);
-Router.get("/read-active-resident", read_active_resident);
-Router.get("/read-user-resident/:id", read_user_resident);
-Router.put("/activate-resident/:id", activate_resident);
-Router.put("/update-resident/:id", update_resident);
-Router.delete("/delete-resident/:id", delete_resident);
+Router.get("/read-resident", AuthMiddleware, read_resident);
+Router.get("/read-active-resident", AuthMiddleware, read_active_resident);
+Router.get("/read-user-resident/:id", AuthMiddleware, read_user_resident);
+Router.put("/activate-resident/:id", AuthMiddleware, activate_resident);
+Router.put("/update-resident/:id", AuthMiddleware, update_resident);
+Router.delete("/delete-resident/:id", AuthMiddleware, delete_resident);
 
 module.exports = Router;
