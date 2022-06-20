@@ -7,14 +7,11 @@ const bcrypt = require("bcrypt");
 // Create Admin
 const create_admin = async (req, res) => {
   const { adminName, password, email, phoneNumber } = req.body;
-
   const existAdmin = await AdminModel.findOne({ email });
   if (existAdmin) {
     return res.status(500).json({ msg: "Email already exist" });
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+  const hashedPassword = await bcrypt.hash(password, process.env.SALT);
   try {
     const newAdmin = new AdminModel({
       adminName,
@@ -34,7 +31,6 @@ const create_admin = async (req, res) => {
 const read_admin = async (req, res) => {
   try {
     const admin = await AdminModel.find().sort({ created_at: -1 });
-
     return res.status(200).json({ msg: "Success fetching admins", admin });
   } catch (error) {
     console.log(error.message);

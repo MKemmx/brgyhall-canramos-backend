@@ -11,7 +11,7 @@ const create_moderator = async (req, res) => {
   if (existModerator) {
     return res.status(500).json({ msg: "Email already exist" });
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, process.env.SALT);
   try {
     const newModerator = new ModeratorModel({
       moderatorName,

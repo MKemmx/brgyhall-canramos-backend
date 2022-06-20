@@ -1,5 +1,8 @@
 const Router = require("express").Router();
 
+// MIDDLEWARES
+const { authMiddleware } = require("../Middleware/AuthMiddleware");
+
 // Controllers
 const {
   create_resident,
@@ -12,7 +15,7 @@ const {
 } = require("../Controllers/residentController");
 
 Router.post("/create-resident", create_resident);
-Router.get("/read-resident", read_resident);
+Router.get("/read-resident", authMiddleware, read_resident);
 Router.get("/read-active-resident", read_active_resident);
 Router.get("/read-user-resident/:id", read_user_resident);
 Router.put("/activate-resident/:id", activate_resident);

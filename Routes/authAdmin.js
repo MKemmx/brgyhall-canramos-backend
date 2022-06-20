@@ -49,6 +49,7 @@ Router.post("/", async (req, res) => {
     }
     // PAYLOAD
     const payload = {
+      role: "admin",
       user: {
         id: adminExist._id,
       },
