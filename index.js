@@ -25,10 +25,12 @@ app.use("/api/blotter/", require("./Routes/blotter"));
 app.use("/api/dashboard/", require("./Routes/dashboard"));
 app.use("/api/admin/", require("./Routes/admin"));
 app.use("/api/moderator/", require("./Routes/moderator"));
+app.use("/api/transaction/", require("./Routes/transaction"));
 
 // LOGIN AUTH ROUTES || ADMIN && MODERATOR
 app.use("/api/auth-admin/", require("./Routes/authAdmin"));
 app.use("/api/auth-moderator/", require("./Routes/authModerator"));
+app.use("/api/auth-resident/", require("./Routes/authResident"));
 
 // Server
 app.listen(process.env.PORT, () => {

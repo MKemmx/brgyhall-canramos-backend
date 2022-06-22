@@ -2,10 +2,11 @@
 const CertificateModel = require("../Models/Certificate");
 
 const create_certificate = async (req, res) => {
-  const { residentRequest } = req.body;
+  const { residentRequest, requestPurpose } = req.body;
   try {
     const newCertificate = new CertificateModel({
       residentRequest,
+      requestPurpose,
     });
     const savedCertificate = await newCertificate.save();
     return res

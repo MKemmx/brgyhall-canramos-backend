@@ -1,12 +1,16 @@
 // RESIDENT MODEL
 const ResidentModel = require("../Models/Resident");
 
+// Bcrypt
+const bcrypt = require("bcrypt");
+
 const create_resident = async (req, res) => {
   const {
     firstName,
     middleName,
     lastName,
     email,
+    password,
     phoneNumber,
     birthPlace,
     birthDay,
@@ -18,12 +22,30 @@ const create_resident = async (req, res) => {
     voterStatus,
   } = req.body;
 
+  // * Success No Errors
+  const hashedPassword = await bcrypt.hash(
+    password,
+    parseInt(process.env.SALT)
+  );
+
   try {
+    const residentExist = await ResidentModel.findOne({
+      firstName,
+      middleName,
+      lastName,
+      email,
+    });
+    //? Check if Resident Account Already Exist!
+    if (residentExist) {
+      return res.status(400).json({ msg: "Resident already exist!" });
+    }
+
     const newResidet = new ResidentModel({
       firstName,
       middleName,
       lastName,
       email,
+      password: hashedPassword,
       phoneNumber,
       birthPlace,
       birthDay,
