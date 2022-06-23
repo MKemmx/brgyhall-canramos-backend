@@ -31,12 +31,17 @@ const read_user_transaction = async (req, res) => {
       {
         $project: {
           __v: 0,
-          "certificate.__v": 0,
+          "indigency.__v": 0,
         },
       },
     ]);
 
-    return res.status(200).json(transactionData);
+    const userTransactions = [
+      ...transactionData[0].certificate,
+      ...transactionData[0].indigency,
+    ];
+
+    return res.status(200).json(userTransactions);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ msg: "Server Error" });
