@@ -1,5 +1,9 @@
 // Resident Model
 const ResidentModel = require("../Models/Resident");
+
+const CertificateModel = require("../Models/Certificate");
+const IndigencyModel = require("../Models/Indigency");
+
 const ObjectId = require("mongodb").ObjectID;
 
 const read_user_transaction = async (req, res) => {
@@ -36,12 +40,7 @@ const read_user_transaction = async (req, res) => {
       },
     ]);
 
-    const userTransactions = [
-      ...transactionData[0].certificate,
-      ...transactionData[0].indigency,
-    ];
-
-    return res.status(200).json(userTransactions);
+    return res.status(200).json(transactionData);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ msg: "Server Error" });
