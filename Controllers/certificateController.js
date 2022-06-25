@@ -55,12 +55,12 @@ const read_one_certificate = async (req, res) => {
     return res.status(500).json({ msg: "Server Error" });
   }
 };
-const update_certificate = async (req, res) => {
-  const { status } = req.body;
+const update_certificate_status = async (req, res) => {
+  const { status, id } = req.body;
 
   try {
     const updatedCertificate = await CertificateModel.updateOne(
-      { _id: req.params.id },
+      { _id: id },
       {
         $set: {
           status,
@@ -82,5 +82,5 @@ module.exports = {
   create_certificate,
   read_certificate,
   read_one_certificate,
-  update_certificate,
+  update_certificate_status,
 };

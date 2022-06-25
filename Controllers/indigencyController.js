@@ -55,11 +55,11 @@ const read_one_indigency = async (req, res) => {
     return res.status(500).json({ msg: "Server Error" });
   }
 };
-const update_indigency = async (req, res) => {
-  const { status } = req.body;
+const update_indigency_status = async (req, res) => {
+  const { status, id } = req.body;
 
   try {
-    const updatedIndigency = IndigencyModel.updateOne(
+    const updatedIndigency = await IndigencyModel.updateOne(
       { _id: id },
       {
         $set: {
@@ -82,5 +82,5 @@ module.exports = {
   create_indigency,
   read_indigency,
   read_one_indigency,
-  update_indigency,
+  update_indigency_status,
 };
