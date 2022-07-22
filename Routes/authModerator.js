@@ -60,7 +60,6 @@ Router.post("/", async (req, res) => {
       return res.status(500).json({ msg: "Something went wrong!" });
     }
     // SUCCESS THROW TOKEN
-
     const data = {
       user: moderatorExist,
       token,

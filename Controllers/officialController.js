@@ -1,10 +1,10 @@
 // IMPORT MODEL
 const OfficialModel = require("../Models/Official");
 const PositionModel = require("../Models/Position");
+const asyncHandler = require("express-async-handler");
 
-const create_official = async (req, res) => {
+const create_official = asyncHandler(async (req, res) => {
   const { user, position, term } = req.body;
-
   const newElected = {
     user,
     term,
@@ -48,104 +48,73 @@ const create_official = async (req, res) => {
     console.log(error.message);
     return res.status(500).json({ msg: "Something went wrong" });
   }
-};
-const read_official = async (req, res) => {
-  try {
-    const official = await OfficialModel.find()
-      .populate("position position")
-      .populate({
-        path: "user",
-        populate: {
-          path: "zone",
-          model: "zone",
-        },
-      })
-      .sort({ status: 1, created_at: -1 });
+});
+const read_official = asyncHandler(async (req, res) => {
+  const official = await OfficialModel.find()
+    .populate("position position")
+    .populate({
+      path: "user",
+      populate: {
+        path: "zone",
+        model: "zone",
+      },
+    })
+    .sort({ status: 1, created_at: -1 });
 
-    return res
-      .status(200)
-      .json({ msg: "Success fetching officials", official });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-const read_active_official = async (req, res) => {
-  try {
-    const official = await OfficialModel.find({ status: "active" })
-      .populate("position position")
-      .populate({
-        path: "user",
-        populate: {
-          path: "zone",
-          model: "zone",
-        },
-      })
-      .sort({ status: 1, created_at: -1 });
-
-    return res
-      .status(200)
-      .json({ msg: "Success fetching officials", official });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-const deactive_official = async (req, res) => {
+  return res.status(200).json({ msg: "Success fetching officials", official });
+});
+const read_active_official = asyncHandler(async (req, res) => {
+  const official = await OfficialModel.find({ status: "active" })
+    .populate("position position")
+    .populate({
+      path: "user",
+      populate: {
+        path: "zone",
+        model: "zone",
+      },
+    })
+    .sort({ status: 1, created_at: -1 });
+  return res.status(200).json({ msg: "Success fetching officials", official });
+});
+const deactive_official = asyncHandler(async (req, res) => {
   const { position } = req.body;
   await PositionModel.updateOne({ _id: position }, { $inc: { elected: -1 } });
-
-  try {
-    const deactiveOfficial = await OfficialModel.updateOne(
-      {
-        _id: req.params.id,
+  const deactiveOfficial = await OfficialModel.updateOne(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: {
+        status: "deactive",
       },
-      {
-        $set: {
-          status: "deactive",
-        },
-      }
-    );
-    return res
-      .status(200)
-      .json({ msg: "Official Deactivated!", deactiveOfficial });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-const delete_official = async (req, res) => {
-  try {
-    const deletedOfficial = await OfficialModel.deleteOne({
-      _id: req.params._id,
-    });
-    return res.status(200).json({ msg: "Deleted Official", deletedOfficial });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
-const update_official = async (req, res) => {
+    }
+  );
+  return res
+    .status(200)
+    .json({ msg: "Official Deactivated!", deactiveOfficial });
+});
+const delete_official = asyncHandler(async (req, res) => {
+  const deletedOfficial = await OfficialModel.deleteOne({
+    _id: req.params._id,
+  });
+  return res.status(200).json({ msg: "Deleted Official", deletedOfficial });
+});
+const update_official = asyncHandler(async (req, res) => {
   const { user, position, term } = req.body;
-  try {
-    const updatedOfficial = await OfficialModel.updateOne(
-      {
-        _id: req.params.id,
+  const updatedOfficial = await OfficialModel.updateOne(
+    {
+      _id: req.params.id,
+    },
+    {
+      $set: {
+        user,
+        position,
+        term,
       },
-      {
-        $set: {
-          user,
-          position,
-          term,
-        },
-      }
-    );
-    return res.status(200).json({ msg: "Updated Official", updatedOfficial });
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ msg: "Something went wrong" });
-  }
-};
+    }
+  );
+  return res.status(200).json({ msg: "Updated Official", updatedOfficial });
+});
 
 module.exports = {
   create_official,

@@ -1,6 +1,5 @@
 // Resident Model
 const ResidentModel = require("../Models/Resident");
-
 const CertificateModel = require("../Models/Certificate");
 const IndigencyModel = require("../Models/Indigency");
 

@@ -1,10 +1,10 @@
 // RESIDENT MODEL
 const ResidentModel = require("../Models/Resident");
-
+const asyncHandler = require("express-async-handler");
 // Bcrypt
 const bcrypt = require("bcrypt");
 
-const create_resident = async (req, res) => {
+const create_resident = asyncHandler(async (req, res) => {
   const {
     firstName,
     middleName,
@@ -28,59 +28,46 @@ const create_resident = async (req, res) => {
     parseInt(process.env.SALT)
   );
 
-  try {
-    const residentExist = await ResidentModel.findOne({
-      firstName,
-      middleName,
-      lastName,
-      email,
-    });
-    //? Check if Resident Account Already Exist!
-    if (residentExist) {
-      return res.status(400).json({ msg: "Resident already exist!" });
-    }
-
-    const newResidet = new ResidentModel({
-      firstName,
-      middleName,
-      lastName,
-      email,
-      password: hashedPassword,
-      phoneNumber,
-      birthPlace,
-      birthDay,
-      civilStatus,
-      gender,
-      voter,
-      zone,
-      citizenship,
-      voterStatus,
-    });
-    const savedResident = await newResidet.save();
-
-    return res
-      .status(200)
-      .json({ msg: "Success creating resident!", savedResident });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Server error!" });
+  const residentExist = await ResidentModel.findOne({
+    firstName,
+    middleName,
+    lastName,
+    email,
+  });
+  //? Check if Resident Account Already Exist!
+  if (residentExist) {
+    return res.status(400).json({ msg: "Resident already exist!" });
   }
-};
 
-const read_resident = async (req, res) => {
-  try {
-    const resident = await ResidentModel.find()
-      .sort({ created_at: -1, status: -1 })
-      .populate("zone");
+  const newResidet = new ResidentModel({
+    firstName,
+    middleName,
+    lastName,
+    email,
+    password: hashedPassword,
+    phoneNumber,
+    birthPlace,
+    birthDay,
+    civilStatus,
+    gender,
+    voter,
+    zone,
+    citizenship,
+    voterStatus,
+  });
+  const savedResident = await newResidet.save();
 
-    return res
-      .status(200)
-      .json({ msg: "Success Fetching residents", resident });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Server error!" });
-  }
-};
+  return res
+    .status(200)
+    .json({ msg: "Success creating resident!", savedResident });
+});
+const read_resident = asyncHandler(async (req, res) => {
+  const resident = await ResidentModel.find()
+    .sort({ created_at: -1, status: -1 })
+    .populate("zone");
+
+  return res.status(200).json({ msg: "Success Fetching residents", resident });
+});
 
 const read_active_resident = async (req, res) => {
   try {
